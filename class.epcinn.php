@@ -3774,7 +3774,7 @@ public function informacionpersonal_contrasenias($id) {
     $row2 = mysqli_fetch_array($results2);
     
     return $row2['NOMBRE_1'] . ' ' 
-    return $row2['NOMBRE_2'] . ' ' 
+    
            . $row2['APELLIDO_PATERNO'] . ' ' 
            . $row2['APELLIDO_MATERNO'];
 }	
