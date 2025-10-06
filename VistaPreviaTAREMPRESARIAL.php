@@ -14,7 +14,7 @@ $conexion = NEW colaboradores();
 $queryVISTAPREV = $conexion->listadoTARJETAEMPRESARIAL2($identioficador);
  $output .= ' 
  <div id="respuestaser"></div>
- <form  id="MATERIAL2form2" > 
+ <form  id="tarjeta2form2" > 
       <div class="table-responsive">  
            <table class="table table-bordered">';
     while($row = mysqli_fetch_array($queryVISTAPREV))
@@ -68,15 +68,7 @@ $queryVISTAPREV = $conexion->listadoTARJETAEMPRESARIAL2($identioficador);
         </tr>
 		
 		
-		
-					  <!-- 
-	  T_TIPO_TARJETA, T_NUMERO_TARJETA, T_FECHA_VENCIMIENTO, T_CODIGO_SEGURIDAD, 
-	  T_LIMITE_CREDITO, T_FECHA_CORTE, T_FECHA_LIMITE, T_NIP, 
-	  T_USUARIO, T_CONTRASENA, T_TELEFONO_EXTRAVIO , T_DIRECCION_COMPLETA,
-	  T_TELEFONO_TARJETA, T_CORREO_ALTA, T_FECHA_BAJA, T_NUMERO_REPORTE, 
-	  T_NOMBRE_OPERADOR, T_OBSERVACIONES_1, T_OBSERVACIONES_2, idRelacion,
-	  T_FOTO_TARJETA, T_FOTO_TARJETA_ATRAS, T_SUBIR_COMPROBABTE, T_SUBIR_INE, 
-	  T_SUBIR_INE_ATRAS, T_SUBIR_ARCHIVO_RELACIONADO-->
+
 		
 		
         <tr>  
@@ -424,7 +416,7 @@ $("#enviarITARJETAEMPRESARIAL2").click(function(){
    $.ajax({  
     url:"colaboradores/controlador.php",
     method:"POST",  
-    data:$('#MATERIAL2form2').serialize(),
+    data:$('#tarjeta2form2').serialize(),
 
     beforeSend:function(){  
     $('#mensajeTEMPRESARIAL').html('cargando'); 
