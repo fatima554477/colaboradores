@@ -430,24 +430,30 @@ $("#enviarITARJETAEMPRESARIAL2").click(function(){
     $('#mensajeTEMPRESARIAL').html('cargando'); 
     }, 	
 	
-    success:function(data){
-	
-		if($.trim(data)=='Ingresado' || $.trim(data)=='Actualizado'){
-				
-			$('#dataModal').modal('hide');
-			$("#reseteateTAREMPRESARIAL").load(location.href + " #reseteateTAREMPRESARIAL");
-			$("#mensajeTEMPRESARIAL").html("<span id='ACTUALIZADO' >"+data+"</span>");
+   success:function(data){
+        var responseText = $.trim($('<div>').html(data).text()).toLowerCase();
 
-			}else{
-				
-			$("#mensajeTEMPRESARIAL").html(data);
-			
-		}
-    }  
+        if(responseText === 'ingresado' || responseText === 'actualizado'){
+
+                $('#dataModal').modal('hide');
+                $("#reseteateTAREMPRESARIAL").load(location.href + " #reseteateTAREMPRESARIAL");
+                $("#mensajeTEMPRESARIAL").html(data);
+
+                }else{
+
+                $("#mensajeTEMPRESARIAL").html(data);
+
+        }
+    }
    });
+
    
+
 });
 
+
+
 		});
+
 		
 	</script>
