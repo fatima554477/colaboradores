@@ -583,26 +583,27 @@ $.ajax({
 
 
 
-
-
-
-
-
-$(document).on('click', '.view_dataBANCARIO', function(){
-var personal_id = $(this).attr('id');
-$.ajax({
+ $(document).on('click', '.view_dataBANCARIO', function(){
+  //$('#dataModal').modal();
+  var personal_id = $(this).attr("id");
+  $.ajax({
 url:'colaboradores/VistaPreviaDatosBancario1.php',
-method:'POST',
-data:{personal_id:personal_id},
-beforeSend:function(){
-$('#mensajeDATOSBANCARIOS1').html('CARGANDO');
-},
-success:function(data){
-$('#personal_detalles').html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();
-$('#dataModal').modal('toggle');
-}
-});
-});
+   method:"POST",
+   data:{personal_id:personal_id},
+    beforeSend:function(){  
+    $('#mensajeDATOSBANCARIOS1').html('CARGANDO'); 
+    },    
+   success:function(data){
+    $('#personal_detalles').html(data);
+    $('#dataModal').modal('show');
+   }
+  });
+ });
+
+
+
+
+
 
 
 $(document).on('click', '.view_databancario1borrar', function(){
@@ -712,24 +713,26 @@ $('#mensajeDIRECEP').html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().de
 });
 });
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////TARJETA EMPRESARIAL///////////////////////////////////////////
 
 
 
 
 
+ 
+ 
  $(document).on('click', '.view_dataTAREMPRESARIAL', function(){
   //$('#dataModal').modal();
   var personal_id = $(this).attr("id");
   $.ajax({
-   url:"colaboradores/VistaPreviaTAREMPRESARIAL.php",
+    url:"colaboradores/VistaPreviaTAREMPRESARIAL.php",
    method:"POST",
    data:{personal_id:personal_id},
     beforeSend:function(){  
-    $('#mensajeTEMPRESARIAL').html('cargando'); 
+    $('#mensajeTEMPRESARIAL').html('CARGANDO'); 
     },    
    success:function(data){
-    $('#personal_detalles').html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();
+    $('#personal_detalles').html(data);
     $('#dataModal').modal('show');
    }
   });
@@ -759,7 +762,7 @@ $('#mensajeDIRECEP').html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().de
 	$('#dataModal3').modal('hide');	
    //AGREGAR		   
 			$("#mensajeTEMPRESARIAL").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();			
-			$("#reseteateTAREMPRESARIAL").load(location.href + " #reseteateTAREMPRESARIAL");
+			$.getScript(load(1));
    }
   });
    //AGREGAR	
@@ -768,50 +771,43 @@ $('#mensajeDIRECEP').html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().de
  });
 
 
+
+
+
+
+
+
+
+
 $("#enviarTEMPRESARIAL").click(function(){
-   $.ajax({  
-      url:"colaboradores/controlador.php",
-      method:"POST",  
-      data:$('#TEMPRESARIALform').serialize(),
+   $.ajax({
+    url:"colaboradores/controlador.php",
+    method:"POST",  
+    data:$('#TEMPRESARIALform').serialize(),
+    beforeSend:function(){  
+    $('#mensajeTEMPRESARIAL').html('cargando'); 
+    }, 	
+	
+    success:function(data){
+		$('#TEMPRESARIALform')[0].reset(); 
 
-      beforeSend:function(){  
-         $('#mensajeTEMPRESARIAL').html('cargando'); 
-      }, 	
-      success:function(data){
-         if($.trim(data)=='Ingresado' || $.trim(data)=='Actualizado'){
-            
-            // Resetea el formulario
-            $('#TEMPRESARIALform')[0].reset();
-
-            // Refresca la parte que quieras
-            $("#reseteateTAREMPRESARIAL").load(location.href + " #reseteateTAREMPRESARIAL");
-
-            // Mensaje de confirmación
-            $("#mensajeTEMPRESARIAL")
-              .html("<span id='ACTUALIZADO'>"+data+"</span>")
-              .fadeIn().delay(2000).fadeOut();
-
-         } else {
-            $("#reseteateTAREMPRESARIAL").load(location.href + " #reseteateTAREMPRESARIAL");
-
-            $("#mensajeTEMPRESARIAL")
-              .html("<span id='ACTUALIZADO'>"+data+"</span>")
-              .fadeIn().delay(2000).fadeOut();
-         }
-      }  
+	
+		if($.trim(data)=='Ingresado' || $.trim(data)=='Actualizado'){
+			//$("#reseteateTAREMPRESARIAL").load(location.href + " #reseteateTAREMPRESARIAL");
+			$("#mensajeTEMPRESARIAL").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();
+			}else{
+					//$("#reseteateTAREMPRESARIAL").load(location.href + " #reseteateTAREMPRESARIAL");
+				
+			$("#mensajeTEMPRESARIAL").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();
+			$.getScript(load(1));
+		}			
+    }  
    });
+   
 });
 
 
-
-
-
-
-
-
-
-
-
+////////////////////////////////////////////////////////////////////////////////////
 
 
  $(document).on('click', '.view_dataPOLIZAS', function(){
@@ -895,6 +891,116 @@ $("#enviarPOLIZASYDOCU").click(function(){
 
 
 
+//CONTACTOS //
+
+$(document).on('click', '.view_dataCONTACTOSmodifica', function(){
+  //$('#dataModal').modal();
+  var personal_id = $(this).attr("id");
+  $.ajax({
+   url:"colaboradores/VistaPreviaCONTACTOScolab.php",
+   method:"POST",
+   data:{personal_id:personal_id},
+    beforeSend:function(){  
+    $('#mensajeNOMBRECONTACTO').html('CARGANDO'); 
+    },    
+   success:function(data){
+    $('#personal_detalles').html(data);
+    $('#dataModal').modal('show');
+   }
+  });
+ });
+
+$(document).on('click', '.view_dataCONTACTOSborrar', function(){
+
+  var borra_id_conCOLAB = $(this).attr("id");
+  var borracontactoCOLAB = "borracontactoCOLAB";
+
+  //AGREGAR
+    $('#personal_detalles3').html();
+    $('#dataModal3').modal('show');
+  $('#btnYes').click(function() {
+  //AGREGAR
+
+  
+  $.ajax({
+   url:"colaboradores/controlador.php",
+   method:"POST",
+   data:{borra_id_conCOLAB:borra_id_conCOLAB,borracontactoCOLAB:borracontactoCOLAB},
+   
+    beforeSend:function(){  
+    $('#mensajeNOMBRECONTACTO').html('CARGANDO'); 
+    },    
+   success:function(data){
+	   			$('#dataModal3').modal('hide');	   
+			$("#mensajeNOMBRECONTACTO").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut(); 			
+			$("#resetCONTACTOS").load(location.href + " #resetCONTACTOS");
+   }
+  });
+  
+    //AGREGAR	
+	});
+  //AGREGAR	 
+  
+ });
+
+
+$("#enviarNOMBRECONTACTO").click(function(){
+
+const formData = new FormData($('#NOMBRECONTACTOform')[0]);
+
+$.ajax({
+   url:"colaboradores/controlador.php",
+    type: 'POST',
+    dataType: 'html',
+    data: formData,
+    cache: false,
+    contentType: false,
+    processData: false
+}).done(function(data) {
+
+		if($.trim(data)=='Ingresado' || $.trim(data)=='Actualizado'){	
+            $("#NOMBRECONTACTOform")[0].reset();
+			$("#resetCONTACTOS").load(location.href + " #resetCONTACTOS");
+			$("#mensajeNOMBRECONTACTO").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut(); 
+			}else{
+			$("#mensajeNOMBRECONTACTO").html(data);
+		}
+})
+.fail(function() {
+    console.log("detect error");
+});
+});
+
+	//SCRIPT enviar EMAIL
+$(document).on('click', '#enviarimailCONT', function(){
+var CONTACTO_ENVIAR_IMAIL = $('#CONTACTO_ENVIAR_IMAIL').val();
+
+
+        var myCheckboxes = new Array();
+        $("input:checked").each(function() {
+           myCheckboxes.push($(this).val());
+        });
+var dataString = $("#form_emai_CONTACTOS").serialize();  
+
+
+
+$.ajax({
+url:"colaboradores/controlador.php",
+method:'POST',
+dataType: 'html',
+
+data: dataString+{CONTACTO_ENVIAR_IMAIL:CONTACTO_ENVIAR_IMAIL},
+
+
+beforeSend:function(){
+$('#mensajeNOMBRECONTACTO').html('CARGANDO');
+},
+success:function(data){
+$('#mensajeNOMBRECONTACTO').html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut(); 
+
+}
+});
+});
 
 
 
@@ -1607,6 +1713,7 @@ $(document).on('click', '.view_databorraNUEVOdocu', function(){
 			$('#target80').hide("linear");
 			$('#target81').hide("linear");
 			$('#target82').hide("linear");
+			$('#target83').hide("linear");
 			$('#targetVIDEO').hide("linear");
 			
 			$("#mostrar1").click(function(){
@@ -1941,6 +2048,14 @@ $(document).on('click', '.view_databorraNUEVOdocu', function(){
 			$("#ocultar82").click(function(){
 				$('#target82').hide("linear");
 				
+			});	
+
+  			$("#mostrar83").click(function(){
+				$('#target83').show("swing");
+		 	});
+			$("#ocultar83").click(function(){
+				$('#target83').hide("linear");
+				
 			});			
 
 			$("#mostrarVIDEO").click(function(){
@@ -2003,6 +2118,7 @@ $(document).on('click', '.view_databorraNUEVOdocu', function(){
 				$('#target80').show("swing");	
 				$('#target81').show("swing");				
 				$('#target82').show("swing");				
+				$('#target83').show("swing");				
 				$('#targetVIDEO').show("swing");
 		 	});
 			
@@ -2059,6 +2175,7 @@ $(document).on('click', '.view_databorraNUEVOdocu', function(){
 				$('#target80').hide("linear");
 				$('#target81').hide("linear");				
 				$('#target82').hide("linear");				
+				$('#target83').hide("linear");				
 				$('#targetVIDEO').hide("linear");
 			});
 
@@ -2123,6 +2240,7 @@ $(document).on('click', '.view_databorraNUEVOdocu', function(){
 				$('#target80').show("swing");	
 				$('#target81').show("swing");				
 				$('#target82').show("swing");				
+				$('#target83').show("swing");				
 				$('#targetVIDEO').show("swing");
 		 	});
 			
@@ -2179,6 +2297,7 @@ $(document).on('click', '.view_databorraNUEVOdocu', function(){
 				$('#target80').hide("linear");
 				$('#target81').hide("linear");				
 				$('#target82').hide("linear");				
+				$('#target83').hide("linear");				
 				$('#targetVIDEO').hide("linear");
 			});
 
