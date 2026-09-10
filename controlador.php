@@ -85,9 +85,10 @@ $validaNOMBRECONTACTO   = isset($_POST["validaNOMBRECONTACTO"])   ? $_POST["vali
 $borracontactoCOLAB     = isset($_POST["borracontactoCOLAB"])     ? $_POST["borracontactoCOLAB"]     : "";
 $CONTACTO_ENVIAR_IMAIL  = isset($_POST["CONTACTO_ENVIAR_IMAIL"])  ? $_POST["CONTACTO_ENVIAR_IMAIL"]  : "";
 $enviarimailCONT        = isset($_POST["enviarimailCONT"])        ? $_POST["enviarimailCONT"]        : "";
+$ENVIACONTACTOCOLAB        = isset($_POST["ENVIACONTACTOCOLAB"])        ? $_POST["ENVIACONTACTOCOLAB"]        : "";
 
 
-if($validaNOMBRECONTACTO == 'validaNOMBRECONTACTO' or $enviarimailCONT == 'enviarimailCONT'){
+if($validaNOMBRECONTACTO == 'validaNOMBRECONTACTO' or $ENVIACONTACTOCOLAB == 'ENVIACONTACTOCOLAB'){
 
 	if( $_FILES["TARJETA_COLAB"] == true){
 		$TARJETA_COLAB = $conexion->solocargar("TARJETA_COLAB");
@@ -110,7 +111,7 @@ if($validaNOMBRECONTACTO == 'validaNOMBRECONTACTO' or $enviarimailCONT == 'envia
 		$NOMBRE_CONTACTO_COLAB, $CEL_CONTACTO_COLAB, $TELEFONO_CONTACCOLAB,
 		$NUMERO_EXTENSION_COLAB, $EMAIL_CONTACTO_COLAB, $OBSERVACIONES_COLAB,
 		$FECHA_CONTACTOS_COLAB, $TARJETA_COLAB, $validaNOMBRECONTACTO,
-		$IPcontactosCOLAB, $enviarimailCONT
+		$IPcontactosCOLAB, $enviarimailCONT, $ENVIACONTACTOCOLAB
 	);
 }
 
@@ -1847,7 +1848,12 @@ foreach($_FILES AS $ETQIETA => $VALOR){
 }	
 }
 
-
+if($IPcontactosCOLAB == true and $_FILES["TARJETA_COLAB"] == true  ){
+	//echo $IpPOLIZAS;
+foreach($_FILES AS $ETQIETA => $VALOR){
+	echo $conexion->cargar($ETQIETA,'01CONTACTOSCOLAB','3',$IPcontactosCOLAB);
+}	
+}
 
 if($IpCONVENIOPRESTAMO == true and ($_FILES["CP_CARGAR_CONVENIO"] == true or $_FILES["CP_CARGAR_FICHA"] == true)){
 	//echo $IpPOLIZAS;

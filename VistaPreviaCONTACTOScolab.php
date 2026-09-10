@@ -10,7 +10,7 @@ if($identioficador != '')
  $output = '';
 	require "controlador.php";
 
-$conexion = NEW accesoclase();
+$conexion = new colaboradores();
 $queryVISTAPREV = $conexion->listadocontactocola2($identioficador);
  $output .= ' <form  id="listadocontactoCOLABform"> 
       <div class="table-responsive">  
