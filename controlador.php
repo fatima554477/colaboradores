@@ -81,86 +81,6 @@ $PDIRECCIONF_ENVIAR_IMAIL = isset($_POST["PDIRECCIONF_ENVIAR_IMAIL"])?$_POST["PD
 
 $borraCOLABORADOR = isset($_POST["borraCOLABORADOR"])?$_POST["borraCOLABORADOR"]:"";
 $mandacorreo = isset($_POST["mandacorreo"])?$_POST["mandacorreo"]:"";
-$validaNOMBRECONTACTO   = isset($_POST["validaNOMBRECONTACTO"])   ? $_POST["validaNOMBRECONTACTO"]   : "";
-$borracontactoCOLAB     = isset($_POST["borracontactoCOLAB"])     ? $_POST["borracontactoCOLAB"]     : "";
-$CONTACTO_ENVIAR_IMAIL  = isset($_POST["CONTACTO_ENVIAR_IMAIL"])  ? $_POST["CONTACTO_ENVIAR_IMAIL"]  : "";
-$enviarimailCONT        = isset($_POST["enviarimailCONT"])        ? $_POST["enviarimailCONT"]        : "";
-$ENVIACONTACTOCOLAB        = isset($_POST["ENVIACONTACTOCOLAB"])        ? $_POST["ENVIACONTACTOCOLAB"]        : "";
-
-
-if($validaNOMBRECONTACTO == 'validaNOMBRECONTACTO' or $ENVIACONTACTOCOLAB == 'ENVIACONTACTOCOLAB'){
-
-	if( $_FILES["TARJETA_COLAB"] == true){
-		$TARJETA_COLAB = $conexion->solocargar("TARJETA_COLAB");
-	}
-	if($TARJETA_COLAB=='2' or $TARJETA_COLAB=='' or $TARJETA_COLAB=='1'){
-		$TARJETA_COLAB1 = '';
-	}
-
-	$NOMBRE_CONTACTO_COLAB   = isset($_POST["NOMBRE_CONTACTO_COLAB"])   ? $_POST["NOMBRE_CONTACTO_COLAB"]   : "";
-	$CEL_CONTACTO_COLAB      = isset($_POST["CEL_CONTACTO_COLAB"])      ? $_POST["CEL_CONTACTO_COLAB"]      : "";
-	$TELEFONO_CONTACCOLAB    = isset($_POST["TELEFONO_CONTACCOLAB"])    ? $_POST["TELEFONO_CONTACCOLAB"]    : "";
-	$NUMERO_EXTENSION_COLAB  = isset($_POST["NUMERO_EXTENSION_COLAB"])  ? $_POST["NUMERO_EXTENSION_COLAB"]  : "";
-	$EMAIL_CONTACTO_COLAB    = isset($_POST["EMAIL_CONTACTO_COLAB"])    ? $_POST["EMAIL_CONTACTO_COLAB"]    : "";
-	$OBSERVACIONES_COLAB     = isset($_POST["OBSERVACIONES_COLAB"])     ? $_POST["OBSERVACIONES_COLAB"]     : "";
-	$FECHA_CONTACTOS_COLAB   = isset($_POST["FECHA_CONTACTOS_COLAB"])   ? $_POST["FECHA_CONTACTOS_COLAB"]   : "";
-	$validaNOMBRECONTACTO    = isset($_POST["validaNOMBRECONTACTO"])    ? $_POST["validaNOMBRECONTACTO"]    : "";
-	$IPcontactosCOLAB        = isset($_POST["IPcontactosCOLAB"])        ? $_POST["IPcontactosCOLAB"]        : "";
-
-	echo $conexion->enviarNOMBRECONTACTO(
-		$NOMBRE_CONTACTO_COLAB, $CEL_CONTACTO_COLAB, $TELEFONO_CONTACCOLAB,
-		$NUMERO_EXTENSION_COLAB, $EMAIL_CONTACTO_COLAB, $OBSERVACIONES_COLAB,
-		$FECHA_CONTACTOS_COLAB, $TARJETA_COLAB, $validaNOMBRECONTACTO,
-		$IPcontactosCOLAB, $enviarimailCONT, $ENVIACONTACTOCOLAB
-	);
-}
-
-elseif($CONTACTO_ENVIAR_IMAIL == true){
-	$conexion2 = new herramientas();
-	$NOMBRE_1 = 'Peticion';
-	$EMAILnombre = array($CONTACTO_ENVIAR_IMAIL => $NOMBRE_1);
-	$adjuntos = array('' => '');
-	$Subject = 'DATOS SOLICITADOS';
-
-	$array = isset($_POST['contacCOLAB']) ? $_POST['contacCOLAB'] : '';
-	if($array != ''){
-		$loopcuenta = count($array) - 1; $loopcuenta2 = count($array) - 2;
-		$or1 = '';
-		for($rrr=0; $rrr<=$loopcuenta; $rrr++){
-			if($rrr<=$loopcuenta2){ $or1 = ' or '; } else { $or1 = ''; }
-			$query1 .= ' id= '.$array[$rrr].$or1;
-		}
-		$query2 = str_replace('[object Object]', '', $query1);
-		$query2 = "and (".$query2.") ";
-	} else {
-		echo "SELECCIONA UNA CASILLA DEL LISTADO DE ABAJO."; exit;
-	}
-
-	$MANDA_INFORMACION = $conexion->MANDA_INFORMACION(
-		'NOMBRE_CONTACTO_COLAB,CEL_CONTACTO_COLAB,TELEFONO_CONTACCOLAB,NUMERO_EXTENSION_COLAB,EMAIL_CONTACTO_COLAB,OBSERVACIONES_COLAB',
-
-		'NOMBRE DEL CONTACTO,
-		CELULAR DEL CONTACTO,
-		TELÉFONO DIRECTO,
-		NÚMERO DE EXTENSIÓN,
-		EMAIL DE CONTACTO,
-		OBSERVACIONES,
-
-		', '01CONTACTOSCOLAB', " where idRelacion = '".$_SESSION['id']."' 
-	".$query2 );
-
-	$html = $conexion->html2(' CONTACTOS', $MANDA_INFORMACION);
-	$idlogo = $conexion->variable_comborelacion1a();
-	$logo = $conexion->variables_informacionfiscal_logo($idlogo);
-	$embebida = array('../includes/archivos/'.$logo => 'ver');
-	echo $conexion2->email($EMAILnombre, $html, $adjuntos, $embebida, $Subject);
-}
-
-elseif($borracontactoCOLAB == 'borracontactoCOLAB'){
-	$borra_id_conCOLAB = isset($_POST["borra_id_conCOLAB"]) ? $_POST["borra_id_conCOLAB"] : "";
-
-	echo $conexion->borracontactoCOLAB($borra_id_conCOLAB);
-}
 									
 
 
@@ -1848,12 +1768,7 @@ foreach($_FILES AS $ETQIETA => $VALOR){
 }	
 }
 
-if($IPcontactosCOLAB == true and $_FILES["TARJETA_COLAB"] == true  ){
-	//echo $IpPOLIZAS;
-foreach($_FILES AS $ETQIETA => $VALOR){
-	echo $conexion->cargar($ETQIETA,'01CONTACTOSCOLAB','3',$IPcontactosCOLAB);
-}	
-}
+
 
 if($IpCONVENIOPRESTAMO == true and ($_FILES["CP_CARGAR_CONVENIO"] == true or $_FILES["CP_CARGAR_FICHA"] == true)){
 	//echo $IpPOLIZAS;
