@@ -891,6 +891,116 @@ $("#enviarPOLIZASYDOCU").click(function(){
 
 
 
+//CONTACTOS //
+
+$(document).on('click', '.view_dataCONTACTOSmodifica', function(){
+  //$('#dataModal').modal();
+  var personal_id = $(this).attr("id");
+  $.ajax({
+   url:"colaboradores/VistaPreviaCONTACTOScolab.php",
+   method:"POST",
+   data:{personal_id:personal_id},
+    beforeSend:function(){  
+    $('#mensajeNOMBRECONTACTO').html('CARGANDO'); 
+    },    
+   success:function(data){
+    $('#personal_detalles').html(data);
+    $('#dataModal').modal('show');
+   }
+  });
+ });
+
+$(document).on('click', '.view_dataCONTACTOSborrar', function(){
+
+  var borra_id_conCOLAB = $(this).attr("id");
+  var borracontactoCOLAB = "borracontactoCOLAB";
+
+  //AGREGAR
+    $('#personal_detalles3').html();
+    $('#dataModal3').modal('show');
+  $('#btnYes').click(function() {
+  //AGREGAR
+
+  
+  $.ajax({
+   url:"colaboradores/controlador.php",
+   method:"POST",
+   data:{borra_id_conCOLAB:borra_id_conCOLAB,borracontactoCOLAB:borracontactoCOLAB},
+   
+    beforeSend:function(){  
+    $('#mensajeNOMBRECONTACTO').html('CARGANDO'); 
+    },    
+   success:function(data){
+	   			$('#dataModal3').modal('hide');	   
+			$("#mensajeNOMBRECONTACTO").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut(); 			
+			$("#resetCONTACTOS").load(location.href + " #resetCONTACTOS");
+   }
+  });
+  
+    //AGREGAR	
+	});
+  //AGREGAR	 
+  
+ });
+
+
+$("#enviarNOMBRECONTACTO").click(function(){
+
+const formData = new FormData($('#NOMBRECONTACTOform')[0]);
+
+$.ajax({
+   url:"colaboradores/controlador.php",
+    type: 'POST',
+    dataType: 'html',
+    data: formData,
+    cache: false,
+    contentType: false,
+    processData: false
+}).done(function(data) {
+
+		if($.trim(data)=='Ingresado' || $.trim(data)=='Actualizado'){	
+            $("#NOMBRECONTACTOform")[0].reset();
+			$("#resetCONTACTOS").load(location.href + " #resetCONTACTOS");
+			$("#mensajeNOMBRECONTACTO").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut(); 
+			}else{
+			$("#mensajeNOMBRECONTACTO").html(data);
+		}
+})
+.fail(function() {
+    console.log("detect error");
+});
+});
+
+	//SCRIPT enviar EMAIL
+$(document).on('click', '#enviarimailCONT', function(){
+var CONTACTO_ENVIAR_IMAIL = $('#CONTACTO_ENVIAR_IMAIL').val();
+
+
+        var myCheckboxes = new Array();
+        $("input:checked").each(function() {
+           myCheckboxes.push($(this).val());
+        });
+var dataString = $("#form_emai_CONTACTOS").serialize();  
+
+
+
+$.ajax({
+url:"colaboradores/controlador.php",
+method:'POST',
+dataType: 'html',
+
+data: dataString+{CONTACTO_ENVIAR_IMAIL:CONTACTO_ENVIAR_IMAIL},
+
+
+beforeSend:function(){
+$('#mensajeNOMBRECONTACTO').html('CARGANDO');
+},
+success:function(data){
+$('#mensajeNOMBRECONTACTO').html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut(); 
+
+}
+});
+});
 
 
 
@@ -1060,14 +1170,7 @@ $.ajax({
    success:function(data){
 	
 		$("#reseteateNUEVO").load(location.href + " #reseteateNUEVO");	
-					$("#mensajeDIRCASA1").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();
-
-            $("#tablaDIRCASA1").load(location.href + " #tablaDIRCASA1 > *");
-
-            $("#DIRCASA1form")[0].reset();
-
-            $("#DIRCASA1form [name=registro_id]").val("");
-		
+			$("#mensajeDIRCASA1").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();		
 		$("#despleReset").load(location.href + " #despleReset");	
 
    }
@@ -1131,14 +1234,7 @@ $.ajax({
    success:function(data){
 	
 		$("#reseteateNUEVO").load(location.href + " #reseteateNUEVO");	
-			$("#mensajeF1CERCANO").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();
-
-            $("#tablaF1CERCANO1").load(location.href + " #tablaF1CERCANO1 > *");
-
-            $("#F1CERCANO1form")[0].reset();
-
-            $("#F1CERCANO1form [name=registro_id]").val("");
-
+			$("#mensajeF1CERCANO").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();	
 		$("#despleReset").load(location.href + " #despleReset");	
 
    }
@@ -1560,54 +1656,10 @@ $(document).on('click', '.view_databorraNUEVOdocu', function(){
   //AGREGAR	 
   
  });
- 
- // Edición y borrado de los módulos convertidos a multirregistro.
-
-$(document).on("click", ".modificar-multiregistro", function(){
-
-    const form = $("#" + $(this).data("form"));
-
-    const registro = JSON.parse(atob($(this).attr("data-registro")));
-
-    Object.keys(registro).forEach(function(campo){
-
-        form.find("[name='" + campo + "']").val(registro[campo]);
-
-    });
-
-    form.find("[name=registro_id]").val(registro.id);
-
-    $("html, body").animate({scrollTop: form.offset().top - 100}, 300);
-
-});
-
-
-
-$(document).on("click", ".borrar-multiregistro", function(){
-
-    if(!confirm("¿DESEA BORRAR ESTE REGISTRO?")){ return; }
-
-    const boton = $(this);
-
-    $.post("colaboradores/controlador.php", {
-
-        accion_multiregistro: boton.data("accion"),
-
-        registro_id: boton.data("id")
-
-    }, function(data){
-
-        $("#" + boton.data("tabla")).load(location.href + " #" + boton.data("tabla") + " > *");
-
-        alert(data);
-
-    });
-
-});
-
 	
 	
-			$('#target1').hide("linear");
+			
+$('#target1').hide("linear");
 			
 			
 			$('#target1a1').hide("linear");			
@@ -1663,6 +1715,7 @@ $(document).on("click", ".borrar-multiregistro", function(){
 			$('#target81').hide("linear");
 			$('#target82').hide("linear");
 			$('#target83').hide("linear");
+			$('#target84').hide("linear");
 			$('#targetVIDEO').hide("linear");
 			
 			$("#mostrar1").click(function(){
@@ -1678,24 +1731,24 @@ $(document).on("click", ".borrar-multiregistro", function(){
 			$("#ocultar80").click(function(){
 				$('#target80').hide("linear");
 			});
-
-
+ 
+ 
 			$("#mostrar81").click(function(){
 				$('#target81').show("swing");
 		 	});
 			$("#ocultar81").click(function(){
 				$('#target81').hide("linear");
 			});
-
-
+ 
+ 
 			$("#mostrar1a1").click(function(){
 				$('#target1a1').show("swing");
 		 	});
 			$("#ocultar1a1").click(function(){
 				$('#target1a1').hide("linear");
 			});
-
-
+ 
+ 
 			
 			
 			$("#mostrar2").click(function(){
@@ -1802,43 +1855,43 @@ $(document).on("click", ".borrar-multiregistro", function(){
 			$("#ocultar14").click(function(){
 				$('#target14').hide("linear");
 			});		
-
-
+ 
+ 
 			$("#mostrar15").click(function(){
 				$('#target15').show("swing");
 		 	});
 			$("#ocultar15").click(function(){
 				$('#target15').hide("linear");
 			});					
-
+ 
 			$("#mostrar16").click(function(){
 				$('#target16').show("swing");
 		 	});
 			$("#ocultar16").click(function(){
 				$('#target16').hide("linear");
 			});	
-
+ 
 			$("#mostrar17").click(function(){
 				$('#target17').show("swing");
 		 	});
 			$("#ocultar17").click(function(){
 				$('#target17').hide("linear");
 			});	
-
+ 
 			$("#mostrar18").click(function(){
 				$('#target18').show("swing");
 		 	});
 			$("#ocultar18").click(function(){
 				$('#target18').hide("linear");
 			});
-
+ 
 			$("#mostrar19").click(function(){
 				$('#target19').show("swing");
 		 	});
 			$("#ocultar19").click(function(){
 				$('#target19').hide("linear");
 			});
-
+ 
 			$("#mostrar20").click(function(){
 				$('#target20').show("swing");
 		 	});
@@ -1998,7 +2051,7 @@ $(document).on("click", ".borrar-multiregistro", function(){
 				$('#target82').hide("linear");
 				
 			});	
-
+ 
   			$("#mostrar83").click(function(){
 				$('#target83').show("swing");
 		 	});
@@ -2006,14 +2059,22 @@ $(document).on("click", ".borrar-multiregistro", function(){
 				$('#target83').hide("linear");
 				
 			});			
-
+ 
+  			$("#mostrar84").click(function(){
+				$('#target84').show("swing");
+		 	});
+			$("#ocultar84").click(function(){
+				$('#target84').hide("linear");
+				
+			});			
+ 
 			$("#mostrarVIDEO").click(function(){
 				$('#targetVIDEO').show("swing");
 		 	});
 			$("#ocultarVIDEO").click(function(){
 				$('#targetVIDEO').hide("linear");
 			});
-
+ 
 			$("#mostrartodos").click(function(){
 				$('#target1').show("swing");
 				$('#target1a1').show("linear");				
@@ -2068,6 +2129,7 @@ $(document).on("click", ".borrar-multiregistro", function(){
 				$('#target81').show("swing");				
 				$('#target82').show("swing");				
 				$('#target83').show("swing");				
+				$('#target84').show("swing");				
 				$('#targetVIDEO').show("swing");
 		 	});
 			
@@ -2125,6 +2187,7 @@ $(document).on("click", ".borrar-multiregistro", function(){
 				$('#target81').hide("linear");				
 				$('#target82').hide("linear");				
 				$('#target83').hide("linear");				
+				$('#target84').hide("linear");				
 				$('#targetVIDEO').hide("linear");
 			});
 

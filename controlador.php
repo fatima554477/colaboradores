@@ -15,10 +15,6 @@ $conexionherramientas = new herramientas();
 $listado = isset($_POST["listado"])?$_POST["listado"]:"";
 $empresa = isset($_POST["empresa"])?$_POST["empresa"]:""; 
 $ipersonal1 = isset($_POST["ipersonal1"])?$_POST["ipersonal1"]:"";
-$accion_multiregistro = isset($_POST["accion_multiregistro"])?$_POST["accion_multiregistro"]:"";
-
-$registro_id = isset($_POST["registro_id"])?(int)$_POST["registro_id"]:0;
-
 $dircasa11 = isset($_POST["dircasa11"])?$_POST["dircasa11"]:"";
 $dircasa22 = isset($_POST["dircasa22"])?$_POST["dircasa22"]:"";
 $F1CERCANO1 = isset($_POST["F1CERCANO1"])?$_POST["F1CERCANO1"]:"";
@@ -85,6 +81,85 @@ $PDIRECCIONF_ENVIAR_IMAIL = isset($_POST["PDIRECCIONF_ENVIAR_IMAIL"])?$_POST["PD
 
 $borraCOLABORADOR = isset($_POST["borraCOLABORADOR"])?$_POST["borraCOLABORADOR"]:"";
 $mandacorreo = isset($_POST["mandacorreo"])?$_POST["mandacorreo"]:"";
+$validaNOMBRECONTACTO   = isset($_POST["validaNOMBRECONTACTO"])   ? $_POST["validaNOMBRECONTACTO"]   : "";
+$borracontactoCOLAB     = isset($_POST["borracontactoCOLAB"])     ? $_POST["borracontactoCOLAB"]     : "";
+$CONTACTO_ENVIAR_IMAIL  = isset($_POST["CONTACTO_ENVIAR_IMAIL"])  ? $_POST["CONTACTO_ENVIAR_IMAIL"]  : "";
+$enviarimailCONT        = isset($_POST["enviarimailCONT"])        ? $_POST["enviarimailCONT"]        : "";
+$ENVIACONTACTOCOLAB        = isset($_POST["ENVIACONTACTOCOLAB"])        ? $_POST["ENVIACONTACTOCOLAB"]        : "";
+$IPcontactosCOLAB       = isset($_POST["IPcontactosCOLAB"])       ? $_POST["IPcontactosCOLAB"]       : "";
+
+
+if($validaNOMBRECONTACTO == 'validaNOMBRECONTACTO' or $ENVIACONTACTOCOLAB == 'ENVIACONTACTOCOLAB'){
+
+	$TARJETA_COLAB = isset($_POST["TARJETA_COLAB_ACTUAL"]) ? $_POST["TARJETA_COLAB_ACTUAL"] : "";
+	if(isset($_FILES["TARJETA_COLAB"]) && $_FILES["TARJETA_COLAB"]["error"] === UPLOAD_ERR_OK){
+		$TARJETA_COLAB = $conexion->solocargar("TARJETA_COLAB");
+	}
+
+	$NOMBRE_CONTACTO_COLAB   = isset($_POST["NOMBRE_CONTACTO_COLAB"])   ? $_POST["NOMBRE_CONTACTO_COLAB"]   : "";
+	$CEL_CONTACTO_COLAB      = isset($_POST["CEL_CONTACTO_COLAB"])      ? $_POST["CEL_CONTACTO_COLAB"]      : "";
+	$TELEFONO_CONTACCOLAB    = isset($_POST["TELEFONO_CONTACCOLAB"])    ? $_POST["TELEFONO_CONTACCOLAB"]    : "";
+	$NUMERO_EXTENSION_COLAB  = isset($_POST["NUMERO_EXTENSION_COLAB"])  ? $_POST["NUMERO_EXTENSION_COLAB"]  : "";
+	$EMAIL_CONTACTO_COLAB    = isset($_POST["EMAIL_CONTACTO_COLAB"])    ? $_POST["EMAIL_CONTACTO_COLAB"]    : "";
+	$OBSERVACIONES_COLAB     = isset($_POST["OBSERVACIONES_COLAB"])     ? $_POST["OBSERVACIONES_COLAB"]     : "";
+	$FECHA_CONTACTOS_COLAB   = isset($_POST["FECHA_CONTACTOS_COLAB"])   ? $_POST["FECHA_CONTACTOS_COLAB"]   : "";
+	$validaNOMBRECONTACTO    = isset($_POST["validaNOMBRECONTACTO"])    ? $_POST["validaNOMBRECONTACTO"]    : "";
+	$IPcontactosCOLAB        = isset($_POST["IPcontactosCOLAB"])        ? $_POST["IPcontactosCOLAB"]        : "";
+
+	echo $conexion->enviarNOMBRECONTACTO(
+		$NOMBRE_CONTACTO_COLAB, $CEL_CONTACTO_COLAB, $TELEFONO_CONTACCOLAB,
+		$NUMERO_EXTENSION_COLAB, $EMAIL_CONTACTO_COLAB, $OBSERVACIONES_COLAB,
+		$FECHA_CONTACTOS_COLAB, $TARJETA_COLAB, $validaNOMBRECONTACTO,
+		$IPcontactosCOLAB, $enviarimailCONT, $ENVIACONTACTOCOLAB
+	);
+}
+
+elseif($CONTACTO_ENVIAR_IMAIL == true){
+	$conexion2 = new herramientas();
+	$NOMBRE_1 = 'Peticion';
+	$EMAILnombre = array($CONTACTO_ENVIAR_IMAIL => $NOMBRE_1);
+	$adjuntos = array('' => '');
+	$Subject = 'DATOS SOLICITADOS';
+
+	$array = isset($_POST['contacCOLAB']) ? $_POST['contacCOLAB'] : '';
+	if($array != ''){
+		$loopcuenta = count($array) - 1; $loopcuenta2 = count($array) - 2;
+		$or1 = '';
+		for($rrr=0; $rrr<=$loopcuenta; $rrr++){
+			if($rrr<=$loopcuenta2){ $or1 = ' or '; } else { $or1 = ''; }
+			$query1 .= ' id= '.$array[$rrr].$or1;
+		}
+		$query2 = str_replace('[object Object]', '', $query1);
+		$query2 = "and (".$query2.") ";
+	} else {
+		echo "SELECCIONA UNA CASILLA DEL LISTADO DE ABAJO."; exit;
+	}
+
+	$MANDA_INFORMACION = $conexion->MANDA_INFORMACION(
+		'NOMBRE_CONTACTO_COLAB,CEL_CONTACTO_COLAB,TELEFONO_CONTACCOLAB,NUMERO_EXTENSION_COLAB,EMAIL_CONTACTO_COLAB,OBSERVACIONES_COLAB',
+
+		'NOMBRE DEL CONTACTO,
+		CELULAR DEL CONTACTO,
+		TELÉFONO DIRECTO,
+		NÚMERO DE EXTENSIÓN,
+		EMAIL DE CONTACTO,
+		OBSERVACIONES,
+
+		', '01CONTACTOSCOLAB', " where idRelacion = '".$_SESSION['id']."' 
+	".$query2 );
+
+	$html = $conexion->html2(' CONTACTOS', $MANDA_INFORMACION);
+	$idlogo = $conexion->variable_comborelacion1a();
+	$logo = $conexion->variables_informacionfiscal_logo($idlogo);
+	$embebida = array('../includes/archivos/'.$logo => 'ver');
+	echo $conexion2->email($EMAILnombre, $html, $adjuntos, $embebida, $Subject);
+}
+
+elseif($borracontactoCOLAB == 'borracontactoCOLAB'){
+	$borra_id_conCOLAB = isset($_POST["borra_id_conCOLAB"]) ? $_POST["borra_id_conCOLAB"] : "";
+
+	echo $conexion->borracontactoCOLAB($borra_id_conCOLAB);
+}
 									
 
 
@@ -578,28 +653,13 @@ $PORCENTAJE_DE_INGLES_HABLADO = isset($_POST["PORCENTAJE_DE_INGLES_HABLADO"])?$_
 $PORCENTAJE_DE_INGLES_ESCRITO = isset($_POST["PORCENTAJE_DE_INGLES_ESCRITO"])?$_POST["PORCENTAJE_DE_INGLES_ESCRITO"]:"";
 $DOMINIO_DE_OTRO_IDIOMA_Y_PORCENTAJE = isset($_POST["DOMINIO_DE_OTRO_IDIOMA_Y_PORCENTAJE"])?$_POST["DOMINIO_DE_OTRO_IDIOMA_Y_PORCENTAJE"]:""; 
 
-
-
-
+	/*if($ipersonalcoordina =="" or $NOMBRE_1 =="" or $APELLIDO_PATERNO =="" or $APELLIDO_MATERNO =="" or $CORREO_1 =="" or $FECHA_DE_NACIMIENTO =="" or $ANIOS =="" or $CELULAR_1 =="" or $TELEFONO_DE_CASA_1 =="" or $PORCENTAJE_DE_INGLES_HABLADO =="" or $PORCENTAJE_DE_INGLES_ESCRITO =="" or $DOMINIO_DE_OTRO_IDIOMA_Y_PORCENTAJE ==""){
+	echo "<P id='ERROR'>FAVOR DE LLENAR TODOS LOS CAMPOS EN ROJO</p>";
+}else{*/
 	echo $conexion->guardar_IPERSONALcoordina($ipersonalcoordina , $NOMBRE_1 , $NOMBRE_2 , $NOMBRE_3 , $APELLIDO_PATERNO , $APELLIDO_MATERNO , $CORREO_1 , $IPCORREO2 , $FECHA_DE_NACIMIENTO , $ANIOS , $CELULAR_1 , $CELULAR_2 , $TELEFONO_DE_CASA_1 , $TELEFONO_DE_CASA_2 , $PORCENTAJE_DE_INGLES_HABLADO , $PORCENTAJE_DE_INGLES_ESCRITO , $DOMINIO_DE_OTRO_IDIOMA_Y_PORCENTAJE );
+//}
+//include_once (__ROOT1__."/includes/crea_funciones.php");
 }
-elseif($accion_multiregistro == 'borrar_dircasa1'){
-
-	echo $conexion->borrar_dircasa1($registro_id);
-
-}
-elseif($accion_multiregistro == 'borrar_dircasa1'){
-
-	echo $conexion->borrar_dircasa1($registro_id);
-
-}
-
-elseif($accion_multiregistro == 'borrar_f1cercano'){
-
-	echo $conexion->borrar_f1cercano($registro_id);
-
-}
-
 elseif($dircasa11 == 'dircasa11'){
 
 $EDIFICIO = isset($_POST["EDIFICIO"])?$_POST["EDIFICIO"]:"";
@@ -619,10 +679,12 @@ $DIRECCION_DE_CASA_1_UBICACION_MAPA = isset($_POST["DIRECCION_DE_CASA_1_UBICACIO
 $AUTORIZA_1= isset($_POST["AUTORIZA_1"])?$_POST["AUTORIZA_1"]:"";
 
 
-
-echo $conexion->guardar_dircasa1 ($AUTORIZA_1,$EDIFICIO , $calledir1, $NUMERO_EXTERIOR , $NUMERO_INTERIOR , $NUMERO_INTERIOR_2 , $COLONIA , $ALCALDIA , $C_P , $CIUDAD , $ESTADO , $PAIS , $dircasa11 , $DIRECCION_DE_CASA_1_UBICACION_MAPA, $registro_id );	
-
-
+/*if($EDIFICIO =="" or $NUMERO_EXTERIOR =="" or $COLONIA =="" or $ALCALDIA =="" or $C_P =="" or $CIUDAD =="" or $ESTADO =="" or $PAIS =="" or $dircasa11 =="" or $DIRECCION_DE_CASA_1_UBICACION_MAPA ==""){
+	echo "<P id='ERROR'>FAVOR DE LLENAR TODOS LOS CAMPOS EN ROJO</p>";
+}else{*/
+	echo $conexion->guardar_dircasa1 ($AUTORIZA_1,$EDIFICIO , $calledir1, $NUMERO_EXTERIOR , $NUMERO_INTERIOR , $NUMERO_INTERIOR_2 , $COLONIA , $ALCALDIA , $C_P , $CIUDAD , $ESTADO , $PAIS , $dircasa11 , $DIRECCION_DE_CASA_1_UBICACION_MAPA );	
+//}
+//include_once (__ROOT1__."/includes/crea_funciones.php");
 	
 }
 elseif($dircasa22 =='dircasa22'){
@@ -713,9 +775,16 @@ $FAMILIAR2_PAIS = isset($_POST["FAMILIAR2_PAIS"])?$_POST["FAMILIAR2_PAIS"]:"";
 $F2CERCANO2 = isset($_POST["F2CERCANO2"])?$_POST["F2CERCANO2"]:"";
 $FAMILIAR2_UBICACION_EN_EL_MAPA = isset($_POST["FAMILIAR2_UBICACION_EN_EL_MAPA"])?$_POST["FAMILIAR2_UBICACION_EN_EL_MAPA"]:""; 
 
-
+/*
+if($FAMILIAR2_PARENTESCO =="" or $FAMILIAR2_NOMBRE_1 =="" or $FAMILIAR2_NOMBRE_2 =="" or $FAMILIAR2_APELLIDO_MATERNO =="" or $FAMILIAR2_APELLIDO_PATERNO =="" or $FAMILIAR2_CELULAR_1 =="" or $FAMILIAR2_CELULAR_2 =="" or $FAMILIAR2_TELEFONO_DE_CASA_I =="" or $FAMILIAR2_CORREO_ELECTRONICO =="" or $FAMILIAR2_EDIFICIO =="" or $FAMILIAR2_CALLE =="" or $FAMILIAR2_NUMERO_EXTERIOR =="" or $FAMILIAR2_NUMERO_INTERIOR =="" or $FAMILIAR2_NUMER_INTERIOR_2 =="" or $FAMILIAR2_COLONIA =="" or $FAMILIAR2_ALCALDIA =="" or $FAMILIAR2_C_P =="" or $FAMILIAR2_CIUDAD =="" or $FAMILIAR2_ESTADO =="" or $FAMILIAR2_PAIS =="" or $F2CERCANO2 =="" or $FAMILIAR2_UBICACION_EN_EL_MAPA =="" ){
+//include_once (__ROOT1__."/includes/crea_funciones.php");
 	
-echo $conexion->guardar_f1cercano($FAMILIAR_1_PARENTESCO , $FAMILIAR_1_NOMBRE_1 , $FAMILIAR_1_NOMBRE_2 , $FAMILIAR_1_APELLIDO_MATERNO , $FAMILIAR_1_APELLIDO_PATERNO , $FAMILIAR_1_CELULAR_1 , $FAMILIAR_1_CELULAR_2 , $FAMILIAR_1_TELEFONO_DE_CASA_I , $FAMILIAR_1_CORREO_ELECTRONICO , $FAMILIAR_1_EDIFICIO , $FAMILIAR_1_NUMERO_CALLE , $FAMILIAR_1_NUMERO_EXTERIOR , $FAMILIAR_1_NUMERO_INTERIOR , $FAMILIAR_1_NUMER__INTERIOR_2 , $FAMILIAR_1_COLONIA , $FAMILIAR_1_ALCALDIA , $FAMILIAR_1_C_P , $FAMILIAR_1_CIUDAD , $FAMILIAR_1_ESTADO , $FAMILIAR_1_PAIS , $F1CERCANO1 , $FAMILIAR_1_UBICACION__EN_EL_MAPA, $registro_id );
+	echo "<Pid='ERROR'>FAVOR DE LLENAR TODOS LOS CAMPOS EN ROJO</p>";
+	
+}else{*/
+	
+	echo $conexion->guardar_f2cercano( $FAMILIAR2_PARENTESCO , $FAMILIAR2_NOMBRE_1 , $FAMILIAR2_NOMBRE_2 , $FAMILIAR2_APELLIDO_MATERNO , $FAMILIAR2_APELLIDO_PATERNO , $FAMILIAR2_CELULAR_1 , $FAMILIAR2_CELULAR_2 , $FAMILIAR2_TELEFONO_DE_CASA_I , $FAMILIAR2_CORREO_ELECTRONICO , $FAMILIAR2_EDIFICIO , $FAMILIAR2_CALLE , $FAMILIAR2_NUMERO_EXTERIOR , $FAMILIAR2_NUMERO_INTERIOR , $FAMILIAR2_NUMER_INTERIOR_2 , $FAMILIAR2_COLONIA , $FAMILIAR2_ALCALDIA , $FAMILIAR2_C_P , $FAMILIAR2_CIUDAD , $FAMILIAR2_ESTADO , $FAMILIAR2_PAIS , $F2CERCANO2 , $FAMILIAR2_UBICACION_EN_EL_MAPA );
+//}
 
 
 	
@@ -1778,7 +1847,12 @@ foreach($_FILES AS $ETQIETA => $VALOR){
 }	
 }
 
-
+if($IPcontactosCOLAB != '' && isset($_FILES["TARJETA_COLAB"]) && $_FILES["TARJETA_COLAB"]["error"] === UPLOAD_ERR_OK){
+	//echo $IpPOLIZAS;
+foreach($_FILES AS $ETQIETA => $VALOR){
+	echo $conexion->cargar($ETQIETA,'01CONTACTOSCOLAB','3',$IPcontactosCOLAB);
+}	
+}
 
 if($IpCONVENIOPRESTAMO == true and ($_FILES["CP_CARGAR_CONVENIO"] == true or $_FILES["CP_CARGAR_FICHA"] == true)){
 	//echo $IpPOLIZAS;
