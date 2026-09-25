@@ -2123,11 +2123,9 @@ FECHA_INGRESO_IMSS, JEFE_DIRECTO_1, JEFE_DIRECTO_2, JEFE_DIRECTO_3,PERMISOS, idR
 		return $row['id'];
 	}
 
-        public function guardar_dircasa1($AUTORIZA_1, $EDIFICIO , $calledir1, $NUMERO_EXTERIOR , $NUMERO_INTERIOR , $NUMERO_INTERIOR_2 , $COLONIA , $ALCALDIA , $C_P , $CIUDAD , $ESTADO , $PAIS , $dircasa11 , $DIRECCION_DE_CASA_1_UBICACION_MAPA, $registro_id = 0){
-
+	public function guardar_dircasa1($AUTORIZA_1, $EDIFICIO , $calledir1, $NUMERO_EXTERIOR , $NUMERO_INTERIOR , $NUMERO_INTERIOR_2 , $COLONIA , $ALCALDIA , $C_P , $CIUDAD , $ESTADO , $PAIS , $dircasa11 , $DIRECCION_DE_CASA_1_UBICACION_MAPA){
 		$conn = $this->db();
-		$registro_id = (int)$registro_id;
-
+		$existe = $this->revisar_dircasa1();
 		$session = isset($_SESSION['id'])?$_SESSION['id']:'';
 		if($session != ''){
 			
@@ -2135,15 +2133,11 @@ FECHA_INGRESO_IMSS, JEFE_DIRECTO_1, JEFE_DIRECTO_2, JEFE_DIRECTO_3,PERMISOS, idR
 		 AUTORIZA_1 = '".$AUTORIZA_1."' ,
 
 
-		NUMERO_INTERIOR_2 = '".$NUMERO_INTERIOR_2."' , COLONIA = '".$COLONIA."' , ALCALDIA = '".$ALCALDIA."' , C_P = '".$C_P."' , CIUDAD = '".$CIUDAD."' , ESTADO = '".$ESTADO."' , PAIS = '".$PAIS."' , dircasa11 = '".$dircasa11."' , DIRECCION_DE_CASA_1_UBICACION_MAPA = '".$DIRECCION_DE_CASA_1_UBICACION_MAPA."' where id = '".$registro_id."' and idRelacion = '".$session."' ; ";
-
+		NUMERO_INTERIOR_2 = '".$NUMERO_INTERIOR_2."' , COLONIA = '".$COLONIA."' , ALCALDIA = '".$ALCALDIA."' , C_P = '".$C_P."' , CIUDAD = '".$CIUDAD."' , ESTADO = '".$ESTADO."' , PAIS = '".$PAIS."' , dircasa11 = '".$dircasa11."' , DIRECCION_DE_CASA_1_UBICACION_MAPA = '".$DIRECCION_DE_CASA_1_UBICACION_MAPA."' where idRelacion = '".$session."' ; ";
 		
 		$var2 = "insert into 01dircasa1 ( EDIFICIO, calledir1, NUMERO_EXTERIOR, NUMERO_INTERIOR, NUMERO_INTERIOR_2, COLONIA, ALCALDIA, C_P, CIUDAD, ESTADO, PAIS, dircasa11, DIRECCION_DE_CASA_1_UBICACION_MAPA, idRelacion,AUTORIZA_1) values ( '".$EDIFICIO."' , '".$calledir1."' , '".$NUMERO_EXTERIOR."' , '".$NUMERO_INTERIOR."' , '".$NUMERO_INTERIOR_2."' , '".$COLONIA."' , '".$ALCALDIA."' , '".$C_P."' , '".$CIUDAD."' , '".$ESTADO."' , '".$PAIS."' , '".$dircasa11."' , '".$DIRECCION_DE_CASA_1_UBICACION_MAPA."' , '".$session."' , '".$AUTORIZA_1."'); ";			
 			
-		if($registro_id > 0){	
-
-
-
+		if($existe>=1){	
 
 		mysqli_query($conn,$var1) or die('P233'.mysqli_error($conn));
 		return "ACTUALIZADO";
@@ -2156,32 +2150,6 @@ FECHA_INGRESO_IMSS, JEFE_DIRECTO_1, JEFE_DIRECTO_2, JEFE_DIRECTO_3,PERMISOS, idR
 		}		
 	}
 
-
-	public function listado_dircasa1(){
-
-		$conn = $this->db();
-
-		$session = isset($_SESSION['id']) ? (int)$_SESSION['id'] : 0;
-
-		return mysqli_query($conn, "select * from 01dircasa1 where idRelacion = '".$session."' order by id desc");
-
-	}
-
-
-
-	public function borrar_dircasa1($registro_id){
-
-		$conn = $this->db();
-
-		$session = isset($_SESSION['id']) ? (int)$_SESSION['id'] : 0;
-
-		$registro_id = (int)$registro_id;
-
-		mysqli_query($conn, "delete from 01dircasa1 where id = '".$registro_id."' and idRelacion = '".$session."'") or die('P245'.mysqli_error($conn));
-
-		return "ELEMENTO BORRADO";
-
-	}
 
 
 /**//**//**//**//*DIRECCION CASA 2*//**//**//**//**/
@@ -2200,20 +2168,20 @@ FECHA_INGRESO_IMSS, JEFE_DIRECTO_1, JEFE_DIRECTO_2, JEFE_DIRECTO_3,PERMISOS, idR
 		$row = mysqli_fetch_array($query, MYSQLI_ASSOC);
 		return $row['id'];
 	}
-        public function guardar_f1cercano(  $FAMILIAR_1_PARENTESCO , $FAMILIAR_1_NOMBRE_1 , $FAMILIAR_1_NOMBRE_2 , $FAMILIAR_1_APELLIDO_MATERNO , $FAMILIAR_1_APELLIDO_PATERNO , $FAMILIAR_1_CELULAR_1 , $FAMILIAR_1_CELULAR_2 , $FAMILIAR_1_TELEFONO_DE_CASA_I , $FAMILIAR_1_CORREO_ELECTRONICO , $FAMILIAR_1_EDIFICIO , $FAMILIAR_1_NUMERO_CALLE , $FAMILIAR_1_NUMERO_EXTERIOR , $FAMILIAR_1_NUMERO_INTERIOR , $FAMILIAR_1_NUMER__INTERIOR_2 , $FAMILIAR_1_COLONIA , $FAMILIAR_1_ALCALDIA , $FAMILIAR_1_C_P , $FAMILIAR_1_CIUDAD , $FAMILIAR_1_ESTADO , $FAMILIAR_1_PAIS , $F1CERCANO1 , $FAMILIAR_1_UBICACION__EN_EL_MAPA, $registro_id = 0){
 
+	public function guardar_dircasa2($AUTORIZA_2, $DIRECCION_CASA_2_EDIFICIO , $calledir2,  $DIRECCION_CASA_2_NUMERO_EXTERIOR , $DIRECCION_CASA_2_INTERIOR , $DIRECCION_CASA_INTERIOR_2 , $DIRECCION_CASA_2_COLONIA , $DIRECCION_CASA_2_ALCALDIA , $DIRECCION_CASA_2_C_P , $DIRECCION_CASA_2_CIUDAD , $DIRECCION_CASA_2_ESTADO , $DIRECCION_CASA_2_PAIS , $dircasa22 , $DIRECCION_DE_CASA_2__UBICACION_EN_EL_MAPA ){
 		$conn = $this->db();
-		$registro_id = (int)$registro_id;
+		$existe = $this->revisar_dircasa2();
 		$session = isset($_SESSION['id'])?$_SESSION['id']:'';
 		if($session != ''){
 			
-	$var1 = "update 001familiar1mascercano set FAMILIAR_1_PARENTESCO = '".$FAMILIAR_1_PARENTESCO."' , FAMILIAR_1_NOMBRE_1 = '".$FAMILIAR_1_NOMBRE_1."' , FAMILIAR_1_NOMBRE_2 = '".$FAMILIAR_1_NOMBRE_2."' , FAMILIAR_1_APELLIDO_MATERNO = '".$FAMILIAR_1_APELLIDO_MATERNO."' , FAMILIAR_1_APELLIDO_PATERNO = '".$FAMILIAR_1_APELLIDO_PATERNO."' , FAMILIAR_1_CELULAR_1 = '".$FAMILIAR_1_CELULAR_1."' , FAMILIAR_1_CELULAR_2 = '".$FAMILIAR_1_CELULAR_2."' , FAMILIAR_1_TELEFONO_DE_CASA_I = '".$FAMILIAR_1_TELEFONO_DE_CASA_I."' , FAMILIAR_1_CORREO_ELECTRONICO = '".$FAMILIAR_1_CORREO_ELECTRONICO."' , FAMILIAR_1_EDIFICIO = '".$FAMILIAR_1_EDIFICIO."' , FAMILIAR_1_NUMERO_CALLE = '".$FAMILIAR_1_NUMERO_CALLE."' , FAMILIAR_1_NUMERO_EXTERIOR = '".$FAMILIAR_1_NUMERO_EXTERIOR."' , FAMILIAR_1_NUMERO_INTERIOR = '".$FAMILIAR_1_NUMERO_INTERIOR."' , FAMILIAR_1_NUMER__INTERIOR_2 = '".$FAMILIAR_1_NUMER__INTERIOR_2."' , FAMILIAR_1_COLONIA = '".$FAMILIAR_1_COLONIA."' , FAMILIAR_1_ALCALDIA = '".$FAMILIAR_1_ALCALDIA."' , FAMILIAR_1_C_P = '".$FAMILIAR_1_C_P."' , FAMILIAR_1_CIUDAD = '".$FAMILIAR_1_CIUDAD."' , FAMILIAR_1_ESTADO = '".$FAMILIAR_1_ESTADO."' , FAMILIAR_1_PAIS = '".$FAMILIAR_1_PAIS."' , F1CERCANO1 = '".$F1CERCANO1."' , FAMILIAR_1_UBICACION__EN_EL_MAPA = '".$FAMILIAR_1_UBICACION__EN_EL_MAPA."' where id = '".$registro_id."' and idRelacion = '".$session."' ; ";
-
+		$var1 = "update 01dircasa2 set DIRECCION_CASA_2_EDIFICIO = '".$DIRECCION_CASA_2_EDIFICIO."' , calledir2 = '".$calledir2."' , DIRECCION_CASA_2_NUMERO_EXTERIOR = '".$DIRECCION_CASA_2_NUMERO_EXTERIOR."' , 
+		AUTORIZA_2 = '".$AUTORIZA_2."' , 
+		DIRECCION_CASA_2_INTERIOR = '".$DIRECCION_CASA_2_INTERIOR."' , DIRECCION_CASA_INTERIOR_2 = '".$DIRECCION_CASA_INTERIOR_2."' , DIRECCION_CASA_2_COLONIA = '".$DIRECCION_CASA_2_COLONIA."' , DIRECCION_CASA_2_ALCALDIA = '".$DIRECCION_CASA_2_ALCALDIA."' , DIRECCION_CASA_2_C_P = '".$DIRECCION_CASA_2_C_P."' , DIRECCION_CASA_2_CIUDAD = '".$DIRECCION_CASA_2_CIUDAD."' , DIRECCION_CASA_2_ESTADO = '".$DIRECCION_CASA_2_ESTADO."' , DIRECCION_CASA_2_PAIS = '".$DIRECCION_CASA_2_PAIS."' , dircasa22 = '".$dircasa22."' , DIRECCION_DE_CASA_2__UBICACION_EN_EL_MAPA = '".$DIRECCION_DE_CASA_2__UBICACION_EN_EL_MAPA."' where idRelacion = '".$session."' ; ";
 		
 		$var2 = "insert into 01dircasa2 ( DIRECCION_CASA_2_EDIFICIO,  calledir2, DIRECCION_CASA_2_NUMERO_EXTERIOR, DIRECCION_CASA_2_INTERIOR, DIRECCION_CASA_INTERIOR_2, DIRECCION_CASA_2_COLONIA, DIRECCION_CASA_2_ALCALDIA, DIRECCION_CASA_2_C_P, DIRECCION_CASA_2_CIUDAD, DIRECCION_CASA_2_ESTADO, DIRECCION_CASA_2_PAIS, dircasa22, DIRECCION_DE_CASA_2__UBICACION_EN_EL_MAPA, idRelacion, AUTORIZA_2) values ( '".$DIRECCION_CASA_2_EDIFICIO."' ,  '".$calledir2."' , '".$DIRECCION_CASA_2_NUMERO_EXTERIOR."' , '".$DIRECCION_CASA_2_INTERIOR."' , '".$DIRECCION_CASA_INTERIOR_2."' , '".$DIRECCION_CASA_2_COLONIA."' , '".$DIRECCION_CASA_2_ALCALDIA."' , '".$DIRECCION_CASA_2_C_P."' , '".$DIRECCION_CASA_2_CIUDAD."' , '".$DIRECCION_CASA_2_ESTADO."' , '".$DIRECCION_CASA_2_PAIS."' , '".$dircasa22."' , '".$DIRECCION_DE_CASA_2__UBICACION_EN_EL_MAPA."' , '".$session."', '".$AUTORIZA_2."' ); ";			
 			
-		if($registro_id > 0){	
-	
+		if($existe>=1){	
 
 		mysqli_query($conn,$var1) or die('P276'.mysqli_error($conn));
 		return "ACTUALIZADO";
@@ -2225,32 +2193,6 @@ FECHA_INGRESO_IMSS, JEFE_DIRECTO_1, JEFE_DIRECTO_2, JEFE_DIRECTO_3,PERMISOS, idR
 		echo "NO HAY UN USUARIO SELECCIONADO";	
 		}		
 	}
-		public function listado_f1cercano(){
-
-		$conn = $this->db();
-
-		$session = isset($_SESSION['id']) ? (int)$_SESSION['id'] : 0;
-
-		return mysqli_query($conn, "select * from 001familiar1mascercano where idRelacion = '".$session."' order by id desc");
-
-	}
-
-
-
-	public function borrar_f1cercano($registro_id){
-
-		$conn = $this->db();
-
-		$session = isset($_SESSION['id']) ? (int)$_SESSION['id'] : 0;
-
-		$registro_id = (int)$registro_id;
-
-		mysqli_query($conn, "delete from 001familiar1mascercano where id = '".$registro_id."' and idRelacion = '".$session."'") or die('P287'.mysqli_error($conn));
-
-		return "ELEMENTO BORRADO";
-
-	}
-
 
 
 /**//**//**//**//*001familiar1mascercano*//**//**//**//**/
@@ -2334,7 +2276,36 @@ FECHA_INGRESO_IMSS, JEFE_DIRECTO_1, JEFE_DIRECTO_2, JEFE_DIRECTO_3,PERMISOS, idR
 		}		
 	}
 
+	/* ═════════════════════════════════════════════════════════════
+	   CONTACTOS COLABORADOR
+	   ═════════════════════════════════════════════════════════════ */
 
+
+	public function enviarNOMBRECONTACTO($NOMBRE_CONTACTO_COLAB,$CEL_CONTACTO_COLAB,$TELEFONO_CONTACCOLAB,$NUMERO_EXTENSION_COLAB,$EMAIL_CONTACTO_COLAB,$OBSERVACIONES_COLAB,$FECHA_CONTACTOS_COLAB,$TARJETA_COLAB,$validaNOMBRECONTACTO,$IPcontactosCOLAB,$enviarimailCONT,$ENVIACONTACTOCOLAB){
+		$conn    = $this->db();
+		$session = isset($_SESSION['id'])?$_SESSION['id']:'';    
+		if($session != ''){
+			$var1 = "update 01CONTACTOSCOLAB set NOMBRE_CONTACTO_COLAB='".$NOMBRE_CONTACTO_COLAB."',CEL_CONTACTO_COLAB='".$CEL_CONTACTO_COLAB."',TELEFONO_CONTACCOLAB='".$TELEFONO_CONTACCOLAB."',EMAIL_CONTACTO_COLAB='".$EMAIL_CONTACTO_COLAB."',NUMERO_EXTENSION_COLAB='".$NUMERO_EXTENSION_COLAB."',OBSERVACIONES_COLAB='".$OBSERVACIONES_COLAB."',FECHA_CONTACTOS_COLAB='".$FECHA_CONTACTOS_COLAB."',TARJETA_COLAB='".$TARJETA_COLAB."',validaNOMBRECONTACTO='".$validaNOMBRECONTACTO."' where id='".$IPcontactosCOLAB."' ;";
+			$var2 = "insert into 01CONTACTOSCOLAB (NOMBRE_CONTACTO_COLAB,CEL_CONTACTO_COLAB,TELEFONO_CONTACCOLAB,EMAIL_CONTACTO_COLAB,NUMERO_EXTENSION_COLAB,OBSERVACIONES_COLAB,FECHA_CONTACTOS_COLAB,TARJETA_COLAB,validaNOMBRECONTACTO,idRelacion) values('".$NOMBRE_CONTACTO_COLAB."','".$CEL_CONTACTO_COLAB."','".$TELEFONO_CONTACCOLAB."','".$EMAIL_CONTACTO_COLAB."','".$NUMERO_EXTENSION_COLAB."','".$OBSERVACIONES_COLAB."','".$FECHA_CONTACTOS_COLAB."','".$TARJETA_COLAB."','".$validaNOMBRECONTACTO."','".$_SESSION['id']."');";
+
+	if($ENVIACONTACTOCOLAB=='ENVIACONTACTOCOLAB'){
+		mysqli_query($conn,$var1) or die('P156'.mysqli_error($conn));
+		return "Actualizado";
+	}else{
+		mysqli_query($conn,$var2) or die('P160'.mysqli_error($conn));
+		return "Ingresado";
+			}
+		}else{ echo '<p class="fs-4">NO HAY UN PROVEEDOR SELECCIONADO</p>'; }
+    }
+
+	public function listadocontactocola(){ $conn=$this->db(); return mysqli_query($conn,"select * from 01CONTACTOSCOLAB where idRelacion='".$_SESSION['id']."' order by id desc "); }
+	public function listadocontactocola2($id){ $conn=$this->db(); return mysqli_query($conn,"select * from 01CONTACTOSCOLAB where id='".$id."' "); }
+
+	public function borracontactoCOLAB($id){
+		$conn = $this->db();
+		mysqli_query($conn,"delete from 01CONTACTOSCOLAB where id='".$id."' ");
+		return "<P style='color:green; font-size:25px;'>ELEMENTO BORRADO</P>";
+	}
 
 /**//**//**//**//*03familiar2mascercano *//**//**//**//**/
 
