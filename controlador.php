@@ -87,9 +87,25 @@ $CONTACTO_ENVIAR_IMAIL  = isset($_POST["CONTACTO_ENVIAR_IMAIL"])  ? $_POST["CONT
 $enviarimailCONT        = isset($_POST["enviarimailCONT"])        ? $_POST["enviarimailCONT"]        : "";
 $ENVIACONTACTOCOLAB        = isset($_POST["ENVIACONTACTOCOLAB"])        ? $_POST["ENVIACONTACTOCOLAB"]        : "";
 $IPcontactosCOLAB       = isset($_POST["IPcontactosCOLAB"])       ? $_POST["IPcontactosCOLAB"]       : "";
+$accion_multiregistro   = isset($_POST["accion_multiregistro"])   ? $_POST["accion_multiregistro"]   : "";
+
+$registro_id            = isset($_POST["registro_id"])            ? (int)$_POST["registro_id"]       : 0;
 
 
-if($validaNOMBRECONTACTO == 'validaNOMBRECONTACTO' or $ENVIACONTACTOCOLAB == 'ENVIACONTACTOCOLAB'){
+if($accion_multiregistro == "borrar_dircasa1"){
+
+	echo $conexion->borrar_dircasa1($registro_id);
+
+}
+
+elseif($accion_multiregistro == "borrar_f1cercano"){
+
+	echo $conexion->borrar_f1cercano($registro_id);
+
+}
+
+elseif($validaNOMBRECONTACTO == 'validaNOMBRECONTACTO' or $ENVIACONTACTOCOLAB == 'ENVIACONTACTOCOLAB'){
+
 
 	$TARJETA_COLAB = isset($_POST["TARJETA_COLAB_ACTUAL"]) ? $_POST["TARJETA_COLAB_ACTUAL"] : "";
 	if(isset($_FILES["TARJETA_COLAB"]) && $_FILES["TARJETA_COLAB"]["error"] === UPLOAD_ERR_OK){
@@ -682,7 +698,8 @@ $AUTORIZA_1= isset($_POST["AUTORIZA_1"])?$_POST["AUTORIZA_1"]:"";
 /*if($EDIFICIO =="" or $NUMERO_EXTERIOR =="" or $COLONIA =="" or $ALCALDIA =="" or $C_P =="" or $CIUDAD =="" or $ESTADO =="" or $PAIS =="" or $dircasa11 =="" or $DIRECCION_DE_CASA_1_UBICACION_MAPA ==""){
 	echo "<P id='ERROR'>FAVOR DE LLENAR TODOS LOS CAMPOS EN ROJO</p>";
 }else{*/
-	echo $conexion->guardar_dircasa1 ($AUTORIZA_1,$EDIFICIO , $calledir1, $NUMERO_EXTERIOR , $NUMERO_INTERIOR , $NUMERO_INTERIOR_2 , $COLONIA , $ALCALDIA , $C_P , $CIUDAD , $ESTADO , $PAIS , $dircasa11 , $DIRECCION_DE_CASA_1_UBICACION_MAPA );	
+	echo $conexion->guardar_dircasa1 ($AUTORIZA_1,$EDIFICIO , $calledir1, $NUMERO_EXTERIOR , $NUMERO_INTERIOR , $NUMERO_INTERIOR_2 , $COLONIA , $ALCALDIA , $C_P , $CIUDAD , $ESTADO , $PAIS , $dircasa11 , $DIRECCION_DE_CASA_1_UBICACION_MAPA, $registro_id );	
+	
 //}
 //include_once (__ROOT1__."/includes/crea_funciones.php");
 	
@@ -745,7 +762,8 @@ $FAMILIAR_1_UBICACION__EN_EL_MAPA = isset($_POST["FAMILIAR_1_UBICACION__EN_EL_MA
 	echo "<P id='ERROR'>FAVOR DE LLENAR TODOS LOS CAMPOS EN ROJO</p>";
 }else{*/
 	
-	echo $conexion->guardar_f1cercano($FAMILIAR_1_PARENTESCO , $FAMILIAR_1_NOMBRE_1 , $FAMILIAR_1_NOMBRE_2 , $FAMILIAR_1_APELLIDO_MATERNO , $FAMILIAR_1_APELLIDO_PATERNO , $FAMILIAR_1_CELULAR_1 , $FAMILIAR_1_CELULAR_2 , $FAMILIAR_1_TELEFONO_DE_CASA_I , $FAMILIAR_1_CORREO_ELECTRONICO , $FAMILIAR_1_EDIFICIO , $FAMILIAR_1_NUMERO_CALLE , $FAMILIAR_1_NUMERO_EXTERIOR , $FAMILIAR_1_NUMERO_INTERIOR , $FAMILIAR_1_NUMER__INTERIOR_2 , $FAMILIAR_1_COLONIA , $FAMILIAR_1_ALCALDIA , $FAMILIAR_1_C_P , $FAMILIAR_1_CIUDAD , $FAMILIAR_1_ESTADO , $FAMILIAR_1_PAIS , $F1CERCANO1 , $FAMILIAR_1_UBICACION__EN_EL_MAPA );
+echo $conexion->guardar_f1cercano($FAMILIAR_1_PARENTESCO , $FAMILIAR_1_NOMBRE_1 , $FAMILIAR_1_NOMBRE_2 , $FAMILIAR_1_APELLIDO_MATERNO , $FAMILIAR_1_APELLIDO_PATERNO , $FAMILIAR_1_CELULAR_1 , $FAMILIAR_1_CELULAR_2 , $FAMILIAR_1_TELEFONO_DE_CASA_I , $FAMILIAR_1_CORREO_ELECTRONICO , $FAMILIAR_1_EDIFICIO , $FAMILIAR_1_NUMERO_CALLE , $FAMILIAR_1_NUMERO_EXTERIOR , $FAMILIAR_1_NUMERO_INTERIOR , $FAMILIAR_1_NUMER__INTERIOR_2 , $FAMILIAR_1_COLONIA , $FAMILIAR_1_ALCALDIA , $FAMILIAR_1_C_P , $FAMILIAR_1_CIUDAD , $FAMILIAR_1_ESTADO , $FAMILIAR_1_PAIS , $F1CERCANO1 , $FAMILIAR_1_UBICACION__EN_EL_MAPA, $registro_id );
+
 //}
 	
 	

@@ -77,7 +77,10 @@ if($fechaIngresoDIR1==true){
                      <input   type="text" class="form-control" id="validationCustom02" value="<?php echo $ALCALDIA; ?>" required="" name="ALCALDIA">
                      <div class="valid-feedback">Looks good!</div>
                  
-                  <div class="col-md-4"  style="background:#fbeee6">
+                    </div>
+
+                   <div class="col-md-4"  style="background:#fbeee6">
+
 
                    <strong> <label for="validationCustom01" class="form-label">C.P.</label></strong>
 
@@ -179,7 +182,10 @@ if($fechaIngresoDIR1==true){
 
 
 
-@@ -133,31 +134,52 @@ if($fechaIngresoDIR1==true){
+<button class="btn btn-sm btn-outline-success px-5" type="button" id="enviarDIRCASA1">GUARDAR</button><div style="
+
+    color: #f5f5f5;
+
     text-shadow: 1px 1px 1px #919191,
 
         1px 2px 1px #919191,

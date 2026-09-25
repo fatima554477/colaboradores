@@ -1170,7 +1170,12 @@ $.ajax({
    success:function(data){
 	
 		$("#reseteateNUEVO").load(location.href + " #reseteateNUEVO");	
-			$("#mensajeDIRCASA1").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();		
+				$("#mensajeDIRCASA1").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();
+
+            $("#DIRCASA1form")[0].reset();
+
+            $("#tablaDIRCASA1").load(location.href + " #tablaDIRCASA1 > *");
+		
 		$("#despleReset").load(location.href + " #despleReset");	
 
    }
@@ -1263,7 +1268,12 @@ $.ajax({
    success:function(data){
 	
 		$("#reseteateNUEVO").load(location.href + " #reseteateNUEVO");	
-			$("#mensajeF2CERCANO").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();		
+			$("#mensajeF1CERCANO").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();
+
+            $("#F1CERCANO1form")[0].reset();
+
+            $("#tablaF1CERCANO1").load(location.href + " #tablaF1CERCANO1 > *");
+	
 		$("#despleReset").load(location.href + " #despleReset");	
 
    }
@@ -1657,7 +1667,80 @@ $(document).on('click', '.view_databorraNUEVOdocu', function(){
   
  });
 	
-	
+// DIRECCIÓN DE CASA Y FAMILIAR: edición y borrado de múltiples registros.
+
+$(document).on('click', '.modificar-multiregistro', function(){
+
+  var form = $('#' + $(this).data('form'));
+
+  var bytes = Uint8Array.from(atob($(this).attr('data-registro')), function(character){
+
+    return character.charCodeAt(0);
+
+  });
+
+  var registro = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+
+
+
+  $.each(registro, function(nombre, valor){
+
+    var campo = form.find('[name="' + nombre + '"]');
+
+    if(campo.length){
+
+      campo.val(valor).trigger('change');
+
+    }
+
+  });
+
+  form.find('[name="registro_id"]').val(registro.id);
+
+  $('html, body').animate({scrollTop: form.offset().top - 20}, 300);
+
+});
+
+
+
+$(document).on('click', '.borrar-multiregistro', function(){
+
+  if(!window.confirm('¿Desea borrar este registro?')){
+
+    return;
+
+  }
+
+
+
+  var boton = $(this);
+
+  $.ajax({
+
+    url: 'colaboradores/controlador.php',
+
+    method: 'POST',
+
+    data: {
+
+      accion_multiregistro: boton.data('accion'),
+
+      registro_id: boton.data('id')
+
+    },
+
+    success: function(){
+
+      var tabla = boton.data('tabla');
+
+      $('#' + tabla).load(location.href + ' #' + tabla + ' > *');
+
+    }
+
+  });
+
+});
+
 			
 $('#target1').hide("linear");
 			
