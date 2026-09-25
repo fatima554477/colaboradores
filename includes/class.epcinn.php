@@ -2276,36 +2276,7 @@ FECHA_INGRESO_IMSS, JEFE_DIRECTO_1, JEFE_DIRECTO_2, JEFE_DIRECTO_3,PERMISOS, idR
 		}		
 	}
 
-	/* ═════════════════════════════════════════════════════════════
-	   CONTACTOS COLABORADOR
-	   ═════════════════════════════════════════════════════════════ */
 
-
-	public function enviarNOMBRECONTACTO($NOMBRE_CONTACTO_COLAB,$CEL_CONTACTO_COLAB,$TELEFONO_CONTACCOLAB,$NUMERO_EXTENSION_COLAB,$EMAIL_CONTACTO_COLAB,$OBSERVACIONES_COLAB,$FECHA_CONTACTOS_COLAB,$TARJETA_COLAB,$validaNOMBRECONTACTO,$IPcontactosCOLAB,$enviarimailCONT,$ENVIACONTACTOCOLAB){
-		$conn    = $this->db();
-		$session = isset($_SESSION['id'])?$_SESSION['id']:'';    
-		if($session != ''){
-			$var1 = "update 01CONTACTOSCOLAB set NOMBRE_CONTACTO_COLAB='".$NOMBRE_CONTACTO_COLAB."',CEL_CONTACTO_COLAB='".$CEL_CONTACTO_COLAB."',TELEFONO_CONTACCOLAB='".$TELEFONO_CONTACCOLAB."',EMAIL_CONTACTO_COLAB='".$EMAIL_CONTACTO_COLAB."',NUMERO_EXTENSION_COLAB='".$NUMERO_EXTENSION_COLAB."',OBSERVACIONES_COLAB='".$OBSERVACIONES_COLAB."',FECHA_CONTACTOS_COLAB='".$FECHA_CONTACTOS_COLAB."',TARJETA_COLAB='".$TARJETA_COLAB."',validaNOMBRECONTACTO='".$validaNOMBRECONTACTO."' where id='".$IPcontactosCOLAB."' ;";
-			$var2 = "insert into 01CONTACTOSCOLAB (NOMBRE_CONTACTO_COLAB,CEL_CONTACTO_COLAB,TELEFONO_CONTACCOLAB,EMAIL_CONTACTO_COLAB,NUMERO_EXTENSION_COLAB,OBSERVACIONES_COLAB,FECHA_CONTACTOS_COLAB,TARJETA_COLAB,validaNOMBRECONTACTO,idRelacion) values('".$NOMBRE_CONTACTO_COLAB."','".$CEL_CONTACTO_COLAB."','".$TELEFONO_CONTACCOLAB."','".$EMAIL_CONTACTO_COLAB."','".$NUMERO_EXTENSION_COLAB."','".$OBSERVACIONES_COLAB."','".$FECHA_CONTACTOS_COLAB."','".$TARJETA_COLAB."','".$validaNOMBRECONTACTO."','".$_SESSION['id']."');";
-
-	if($ENVIACONTACTOCOLAB=='ENVIACONTACTOCOLAB'){
-		mysqli_query($conn,$var1) or die('P156'.mysqli_error($conn));
-		return "Actualizado";
-	}else{
-		mysqli_query($conn,$var2) or die('P160'.mysqli_error($conn));
-		return "Ingresado";
-			}
-		}else{ echo '<p class="fs-4">NO HAY UN PROVEEDOR SELECCIONADO</p>'; }
-    }
-
-	public function listadocontactocola(){ $conn=$this->db(); return mysqli_query($conn,"select * from 01CONTACTOSCOLAB where idRelacion='".$_SESSION['id']."' order by id desc "); }
-	public function listadocontactocola2($id){ $conn=$this->db(); return mysqli_query($conn,"select * from 01CONTACTOSCOLAB where id='".$id."' "); }
-
-	public function borracontactoCOLAB($id){
-		$conn = $this->db();
-		mysqli_query($conn,"delete from 01CONTACTOSCOLAB where id='".$id."' ");
-		return "<P style='color:green; font-size:25px;'>ELEMENTO BORRADO</P>";
-	}
 
 /**//**//**//**//*03familiar2mascercano *//**//**//**//**/
 
