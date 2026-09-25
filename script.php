@@ -1060,7 +1060,14 @@ $.ajax({
    success:function(data){
 	
 		$("#reseteateNUEVO").load(location.href + " #reseteateNUEVO");	
-			$("#mensajeDIRCASA1").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();		
+					$("#mensajeDIRCASA1").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();
+
+            $("#tablaDIRCASA1").load(location.href + " #tablaDIRCASA1 > *");
+
+            $("#DIRCASA1form")[0].reset();
+
+            $("#DIRCASA1form [name=registro_id]").val("");
+		
 		$("#despleReset").load(location.href + " #despleReset");	
 
    }
@@ -1124,7 +1131,14 @@ $.ajax({
    success:function(data){
 	
 		$("#reseteateNUEVO").load(location.href + " #reseteateNUEVO");	
-			$("#mensajeF1CERCANO").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();	
+			$("#mensajeF1CERCANO").html("<span id='ACTUALIZADO' >"+data+"</span>").fadeIn().delay(2000).fadeOut();
+
+            $("#tablaF1CERCANO1").load(location.href + " #tablaF1CERCANO1 > *");
+
+            $("#F1CERCANO1form")[0].reset();
+
+            $("#F1CERCANO1form [name=registro_id]").val("");
+
 		$("#despleReset").load(location.href + " #despleReset");	
 
    }
@@ -1546,6 +1560,51 @@ $(document).on('click', '.view_databorraNUEVOdocu', function(){
   //AGREGAR	 
   
  });
+ 
+ // Edición y borrado de los módulos convertidos a multirregistro.
+
+$(document).on("click", ".modificar-multiregistro", function(){
+
+    const form = $("#" + $(this).data("form"));
+
+    const registro = JSON.parse(atob($(this).attr("data-registro")));
+
+    Object.keys(registro).forEach(function(campo){
+
+        form.find("[name='" + campo + "']").val(registro[campo]);
+
+    });
+
+    form.find("[name=registro_id]").val(registro.id);
+
+    $("html, body").animate({scrollTop: form.offset().top - 100}, 300);
+
+});
+
+
+
+$(document).on("click", ".borrar-multiregistro", function(){
+
+    if(!confirm("¿DESEA BORRAR ESTE REGISTRO?")){ return; }
+
+    const boton = $(this);
+
+    $.post("colaboradores/controlador.php", {
+
+        accion_multiregistro: boton.data("accion"),
+
+        registro_id: boton.data("id")
+
+    }, function(data){
+
+        $("#" + boton.data("tabla")).load(location.href + " #" + boton.data("tabla") + " > *");
+
+        alert(data);
+
+    });
+
+});
+
 	
 	
 			$('#target1').hide("linear");

@@ -15,6 +15,10 @@ $conexionherramientas = new herramientas();
 $listado = isset($_POST["listado"])?$_POST["listado"]:"";
 $empresa = isset($_POST["empresa"])?$_POST["empresa"]:""; 
 $ipersonal1 = isset($_POST["ipersonal1"])?$_POST["ipersonal1"]:"";
+$accion_multiregistro = isset($_POST["accion_multiregistro"])?$_POST["accion_multiregistro"]:"";
+
+$registro_id = isset($_POST["registro_id"])?(int)$_POST["registro_id"]:0;
+
 $dircasa11 = isset($_POST["dircasa11"])?$_POST["dircasa11"]:"";
 $dircasa22 = isset($_POST["dircasa22"])?$_POST["dircasa22"]:"";
 $F1CERCANO1 = isset($_POST["F1CERCANO1"])?$_POST["F1CERCANO1"]:"";
@@ -574,13 +578,28 @@ $PORCENTAJE_DE_INGLES_HABLADO = isset($_POST["PORCENTAJE_DE_INGLES_HABLADO"])?$_
 $PORCENTAJE_DE_INGLES_ESCRITO = isset($_POST["PORCENTAJE_DE_INGLES_ESCRITO"])?$_POST["PORCENTAJE_DE_INGLES_ESCRITO"]:"";
 $DOMINIO_DE_OTRO_IDIOMA_Y_PORCENTAJE = isset($_POST["DOMINIO_DE_OTRO_IDIOMA_Y_PORCENTAJE"])?$_POST["DOMINIO_DE_OTRO_IDIOMA_Y_PORCENTAJE"]:""; 
 
-	/*if($ipersonalcoordina =="" or $NOMBRE_1 =="" or $APELLIDO_PATERNO =="" or $APELLIDO_MATERNO =="" or $CORREO_1 =="" or $FECHA_DE_NACIMIENTO =="" or $ANIOS =="" or $CELULAR_1 =="" or $TELEFONO_DE_CASA_1 =="" or $PORCENTAJE_DE_INGLES_HABLADO =="" or $PORCENTAJE_DE_INGLES_ESCRITO =="" or $DOMINIO_DE_OTRO_IDIOMA_Y_PORCENTAJE ==""){
-	echo "<P id='ERROR'>FAVOR DE LLENAR TODOS LOS CAMPOS EN ROJO</p>";
-}else{*/
+
+
+
 	echo $conexion->guardar_IPERSONALcoordina($ipersonalcoordina , $NOMBRE_1 , $NOMBRE_2 , $NOMBRE_3 , $APELLIDO_PATERNO , $APELLIDO_MATERNO , $CORREO_1 , $IPCORREO2 , $FECHA_DE_NACIMIENTO , $ANIOS , $CELULAR_1 , $CELULAR_2 , $TELEFONO_DE_CASA_1 , $TELEFONO_DE_CASA_2 , $PORCENTAJE_DE_INGLES_HABLADO , $PORCENTAJE_DE_INGLES_ESCRITO , $DOMINIO_DE_OTRO_IDIOMA_Y_PORCENTAJE );
-//}
-//include_once (__ROOT1__."/includes/crea_funciones.php");
 }
+elseif($accion_multiregistro == 'borrar_dircasa1'){
+
+	echo $conexion->borrar_dircasa1($registro_id);
+
+}
+elseif($accion_multiregistro == 'borrar_dircasa1'){
+
+	echo $conexion->borrar_dircasa1($registro_id);
+
+}
+
+elseif($accion_multiregistro == 'borrar_f1cercano'){
+
+	echo $conexion->borrar_f1cercano($registro_id);
+
+}
+
 elseif($dircasa11 == 'dircasa11'){
 
 $EDIFICIO = isset($_POST["EDIFICIO"])?$_POST["EDIFICIO"]:"";
@@ -600,12 +619,10 @@ $DIRECCION_DE_CASA_1_UBICACION_MAPA = isset($_POST["DIRECCION_DE_CASA_1_UBICACIO
 $AUTORIZA_1= isset($_POST["AUTORIZA_1"])?$_POST["AUTORIZA_1"]:"";
 
 
-/*if($EDIFICIO =="" or $NUMERO_EXTERIOR =="" or $COLONIA =="" or $ALCALDIA =="" or $C_P =="" or $CIUDAD =="" or $ESTADO =="" or $PAIS =="" or $dircasa11 =="" or $DIRECCION_DE_CASA_1_UBICACION_MAPA ==""){
-	echo "<P id='ERROR'>FAVOR DE LLENAR TODOS LOS CAMPOS EN ROJO</p>";
-}else{*/
-	echo $conexion->guardar_dircasa1 ($AUTORIZA_1,$EDIFICIO , $calledir1, $NUMERO_EXTERIOR , $NUMERO_INTERIOR , $NUMERO_INTERIOR_2 , $COLONIA , $ALCALDIA , $C_P , $CIUDAD , $ESTADO , $PAIS , $dircasa11 , $DIRECCION_DE_CASA_1_UBICACION_MAPA );	
-//}
-//include_once (__ROOT1__."/includes/crea_funciones.php");
+
+echo $conexion->guardar_dircasa1 ($AUTORIZA_1,$EDIFICIO , $calledir1, $NUMERO_EXTERIOR , $NUMERO_INTERIOR , $NUMERO_INTERIOR_2 , $COLONIA , $ALCALDIA , $C_P , $CIUDAD , $ESTADO , $PAIS , $dircasa11 , $DIRECCION_DE_CASA_1_UBICACION_MAPA, $registro_id );	
+
+
 	
 }
 elseif($dircasa22 =='dircasa22'){
@@ -696,16 +713,9 @@ $FAMILIAR2_PAIS = isset($_POST["FAMILIAR2_PAIS"])?$_POST["FAMILIAR2_PAIS"]:"";
 $F2CERCANO2 = isset($_POST["F2CERCANO2"])?$_POST["F2CERCANO2"]:"";
 $FAMILIAR2_UBICACION_EN_EL_MAPA = isset($_POST["FAMILIAR2_UBICACION_EN_EL_MAPA"])?$_POST["FAMILIAR2_UBICACION_EN_EL_MAPA"]:""; 
 
-/*
-if($FAMILIAR2_PARENTESCO =="" or $FAMILIAR2_NOMBRE_1 =="" or $FAMILIAR2_NOMBRE_2 =="" or $FAMILIAR2_APELLIDO_MATERNO =="" or $FAMILIAR2_APELLIDO_PATERNO =="" or $FAMILIAR2_CELULAR_1 =="" or $FAMILIAR2_CELULAR_2 =="" or $FAMILIAR2_TELEFONO_DE_CASA_I =="" or $FAMILIAR2_CORREO_ELECTRONICO =="" or $FAMILIAR2_EDIFICIO =="" or $FAMILIAR2_CALLE =="" or $FAMILIAR2_NUMERO_EXTERIOR =="" or $FAMILIAR2_NUMERO_INTERIOR =="" or $FAMILIAR2_NUMER_INTERIOR_2 =="" or $FAMILIAR2_COLONIA =="" or $FAMILIAR2_ALCALDIA =="" or $FAMILIAR2_C_P =="" or $FAMILIAR2_CIUDAD =="" or $FAMILIAR2_ESTADO =="" or $FAMILIAR2_PAIS =="" or $F2CERCANO2 =="" or $FAMILIAR2_UBICACION_EN_EL_MAPA =="" ){
-//include_once (__ROOT1__."/includes/crea_funciones.php");
+
 	
-	echo "<Pid='ERROR'>FAVOR DE LLENAR TODOS LOS CAMPOS EN ROJO</p>";
-	
-}else{*/
-	
-	echo $conexion->guardar_f2cercano( $FAMILIAR2_PARENTESCO , $FAMILIAR2_NOMBRE_1 , $FAMILIAR2_NOMBRE_2 , $FAMILIAR2_APELLIDO_MATERNO , $FAMILIAR2_APELLIDO_PATERNO , $FAMILIAR2_CELULAR_1 , $FAMILIAR2_CELULAR_2 , $FAMILIAR2_TELEFONO_DE_CASA_I , $FAMILIAR2_CORREO_ELECTRONICO , $FAMILIAR2_EDIFICIO , $FAMILIAR2_CALLE , $FAMILIAR2_NUMERO_EXTERIOR , $FAMILIAR2_NUMERO_INTERIOR , $FAMILIAR2_NUMER_INTERIOR_2 , $FAMILIAR2_COLONIA , $FAMILIAR2_ALCALDIA , $FAMILIAR2_C_P , $FAMILIAR2_CIUDAD , $FAMILIAR2_ESTADO , $FAMILIAR2_PAIS , $F2CERCANO2 , $FAMILIAR2_UBICACION_EN_EL_MAPA );
-//}
+echo $conexion->guardar_f1cercano($FAMILIAR_1_PARENTESCO , $FAMILIAR_1_NOMBRE_1 , $FAMILIAR_1_NOMBRE_2 , $FAMILIAR_1_APELLIDO_MATERNO , $FAMILIAR_1_APELLIDO_PATERNO , $FAMILIAR_1_CELULAR_1 , $FAMILIAR_1_CELULAR_2 , $FAMILIAR_1_TELEFONO_DE_CASA_I , $FAMILIAR_1_CORREO_ELECTRONICO , $FAMILIAR_1_EDIFICIO , $FAMILIAR_1_NUMERO_CALLE , $FAMILIAR_1_NUMERO_EXTERIOR , $FAMILIAR_1_NUMERO_INTERIOR , $FAMILIAR_1_NUMER__INTERIOR_2 , $FAMILIAR_1_COLONIA , $FAMILIAR_1_ALCALDIA , $FAMILIAR_1_C_P , $FAMILIAR_1_CIUDAD , $FAMILIAR_1_ESTADO , $FAMILIAR_1_PAIS , $F1CERCANO1 , $FAMILIAR_1_UBICACION__EN_EL_MAPA, $registro_id );
 
 
 	
